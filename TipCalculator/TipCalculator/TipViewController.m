@@ -40,7 +40,6 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.txtBill becomeFirstResponder];
-
 }
 
 - (void)didReceiveMemoryWarning

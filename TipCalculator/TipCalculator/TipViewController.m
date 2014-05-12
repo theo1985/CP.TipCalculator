@@ -23,6 +23,7 @@
 - (void) onKeyboardClick;
 - (void) onSettingsClick;
 - (void) updateUI;
+- (float) roundValue:(float)rawValue;
 - (float) roundValue:(float)rawValue extraValue:(float)extraValue;
 
 @end
@@ -92,14 +93,19 @@
     int totalPeople = self.btnPeople.value;
     float billAmount = [self.txtBill.text floatValue] / totalPeople;
     float tipAmount = [self roundValue:(billAmount * tipVal) extraValue:fmodf(billAmount, 1.0f)];
-    float totalAmount = [self roundValue:(billAmount + tipAmount) extraValue:0.0f];
+    float totalAmount = [self roundValue:(billAmount + tipAmount)];
     
     NSString *pplString = (totalPeople == 1 ? @"person" : @"people");
     
     self.lblPeople.text = [NSString stringWithFormat:@"(%d %@)", totalPeople, pplString];
-    self.lblBillPerson.text = [NSString stringWithFormat:@"%.02f", [self roundValue:billAmount extraValue:0.0f]];
+    self.lblBillPerson.text = [NSString stringWithFormat:@"%.02f", [self roundValue:billAmount]];
     self.lblTipPerson.text = [NSString stringWithFormat:@"%.02f", tipAmount];
     self.lblPerPerson.text = [NSString stringWithFormat:@"%.02f", totalAmount];
+}
+
+- (float) roundValue:(float)rawValue
+{
+    return ceilf(rawValue * 100) / 100;
 }
 
 - (float) roundValue:(float)rawValue extraValue:(float)extraValue
@@ -108,25 +114,25 @@
     NSString *btnRoundingIndex = [defaults objectForKey:@"btnRoundingIndex"];
     
     int roundingMethod = 1;
-    if(btnRoundingIndex != nil && (extraValue > 0.0f || fmodf(rawValue, 1.0f) > 0.0f))
+    if(btnRoundingIndex != nil)
     {
         roundingMethod = [btnRoundingIndex floatValue];
-        rawValue = ceilf(rawValue * 100) / 100;
+    
+        switch (roundingMethod) {
+            case 0:
+                rawValue -= fmodf(extraValue + rawValue, 1.0f);
+                break;
+            
+            case 2:
+                rawValue += fmodf(1.0f - fmodf(extraValue + rawValue, 1.0f), 1.0f);
+                break;
+            
+            default:
+                break;
+        }
     }
     
-    switch (roundingMethod) {
-        case 0:
-            rawValue -= fmodf(extraValue + rawValue, 1.0f);
-            break;
-            
-        case 2:
-            rawValue += (1.0f - fmodf(extraValue + rawValue, 1.0f));
-            
-        default:
-            break;
-    }
-    
-    return ceilf(rawValue * 100) / 100;
+    return floorf(rawValue * 100) / 100;
 }
 
 - (void) didReceiveMemoryWarning

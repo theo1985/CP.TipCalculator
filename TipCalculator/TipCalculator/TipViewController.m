@@ -73,7 +73,7 @@
     // Set the buttons left/right
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Keyboard" style:UIBarButtonItemStylePlain target:self action:@selector(onKeyboardClick)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(onSettingsClick)];
-
+    
     // Set focus to txtBill
     [self.txtBill becomeFirstResponder];
 }
@@ -135,13 +135,13 @@
         
         // Value must always be less than 1
         extraValue = fmodf(extraValue + rawValue, 1.0f);
-    
+        
         switch (roundingMethod)
         {
             case 0:
                 rawValue -= extraValue;
                 break;
-            
+                
             case 2:
                 rawValue += fmodf(1.0f - extraValue, 1.0f);
                 break;

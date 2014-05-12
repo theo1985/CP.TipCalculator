@@ -113,10 +113,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *btnRoundingIndex = [defaults objectForKey:@"btnRoundingIndex"];
     
-    int roundingMethod = 1;
     if(btnRoundingIndex != nil)
     {
-        roundingMethod = [btnRoundingIndex floatValue];
+        int roundingMethod = [btnRoundingIndex floatValue];
     
         switch (roundingMethod) {
             case 0:
@@ -125,9 +124,6 @@
             
             case 2:
                 rawValue += fmodf(1.0f - fmodf(extraValue + rawValue, 1.0f), 1.0f);
-                break;
-            
-            default:
                 break;
         }
     }

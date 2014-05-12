@@ -57,7 +57,7 @@
 
 - (IBAction)onValueChange:(id)sender
 {
-    int btnTipIndex = self.btnTip.selectedSegmentIndex;
+    int btnTipIndex = (int)self.btnTip.selectedSegmentIndex;
     int btnPeopleValue = self.btnPeople.value;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

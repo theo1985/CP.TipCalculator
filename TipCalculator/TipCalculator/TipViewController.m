@@ -108,9 +108,10 @@
     NSString *btnRoundingIndex = [defaults objectForKey:@"btnRoundingIndex"];
     
     int roundingMethod = 1;
-    if(btnRoundingIndex != nil && extraValue > 0.0f)
+    if(btnRoundingIndex != nil && (extraValue > 0.0f || fmodf(rawValue, 1.0f) > 0.0f))
     {
         roundingMethod = [btnRoundingIndex floatValue];
+        rawValue = ceilf(rawValue * 100) / 100;
     }
     
     switch (roundingMethod) {
